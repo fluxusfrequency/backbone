@@ -12,7 +12,7 @@
         return factory(_ || root._, Backbone || root.Backbone);
       });
    } else {
-      // RequireJS isn't being used. Assume underscore and backbone are loaded in <script> tags
+      // RequireJS isn't being used. Assume underscore and backbone are loaded in <script> tags.
       factory(_, Backbone);
    }
 }(this, function(_, Backbone) {
@@ -21,21 +21,21 @@
 // as that.
 
 // Hold reference to Underscore.js and Backbone.js in the closure in order
-// to make things work even if they are removed from the global namespace
+// to make things work even if they are removed from the global namespace.
 
 // Generate four random hex digits.
 function S4() {
    return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
 };
 
-// Generate a pseudo-GUID by concatenating random hexadecimal.
+// Generate a pseudo-GUID by concatenating random hexadecimals.
 function guid() {
    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
 };
 
 // Our Store is represented by a single JS object in *localStorage*. Create it
 // with a meaningful name, like the name you'd give a table.
-// window.Store is deprectated, use Backbone.LocalStorage instead
+// window.Store is deprectated, use Backbone.LocalStorage instead.
 Backbone.LocalStorage = window.Store = function(name) {
   this.name = name;
   var store = this.localStorage().getItem(this.name);
@@ -49,8 +49,8 @@ _.extend(Backbone.LocalStorage.prototype, {
     this.localStorage().setItem(this.name, this.records.join(","));
   },
 
-  // Add a model, giving it a (hopefully)-unique GUID, if it doesn't already
-  // have an id of it's own.
+  // Add a model, giving it a (hopefully) unique GUID, if it doesn't already
+  // have an id of its own.
   create: function(model) {
     if (!model.id) {
       model.id = guid();
@@ -101,20 +101,20 @@ _.extend(Backbone.LocalStorage.prototype, {
     return localStorage;
   },
 
-  // fix for "illegal access" error on Android when JSON.parse is passed null
+  // Fix for "illegal access" error on Android when JSON.parse is passed null.
   jsonData: function (data) {
       return data && JSON.parse(data);
   }
 
 });
 
-// localSync delegate to the model or collection's
+// localSync delegates to the model or collection's
 // *localStorage* property, which should be an instance of `Store`.
-// window.Store.sync and Backbone.localSync is deprectated, use Backbone.LocalStorage.sync instead
+// window.Store.sync and Backbone.localSync are deprectated. Use Backbone.LocalStorage.sync instead.
 Backbone.LocalStorage.sync = window.Store.sync = Backbone.localSync = function(method, model, options) {
   var store = model.localStorage || model.collection.localStorage;
 
-  var resp, errorMessage, syncDfd = $.Deferred && $.Deferred(); //If $ is having Deferred - use it.
+  var resp, errorMessage, syncDfd = $.Deferred && $.Deferred(); // If $ has Deferred, use it.
 
   try {
 
@@ -157,8 +157,8 @@ Backbone.LocalStorage.sync = window.Store.sync = Backbone.localSync = function(m
       syncDfd.reject(errorMessage);
   }
 
-  // add compatibility with $.ajax
-  // always execute callback for success and error
+  // Add compatibility with $.ajax.
+  // Always execute callback for success and error.
   if (options && options.complete) options.complete(resp);
 
   return syncDfd && syncDfd.promise();
@@ -174,8 +174,8 @@ Backbone.getSyncMethod = function(model) {
   return Backbone.ajaxSync;
 };
 
-// Override 'Backbone.sync' to default to localSync,
-// the original 'Backbone.sync' is still available in 'Backbone.ajaxSync'
+// Override 'Backbone.sync' to default to localSync.
+// The original 'Backbone.sync' is still available in 'Backbone.ajaxSync'.
 Backbone.sync = function(method, model, options) {
   return Backbone.getSyncMethod(model).apply(this, [method, model, options]);
 };
